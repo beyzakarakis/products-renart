@@ -36,3 +36,61 @@
     transform: rotate(360deg);
   }
 }
+
+/* Kart container yatay scroll */
+.card {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px;
+  scrollbar-width: thin;
+}
+
+/* Kartların arka planını beyaz yap ve gölgeyi kaldır */
+.card > div {
+  background-color: #fff; /* veya 'transparent' */
+  box-shadow: none;
+  border-radius: 20px;
+}
+
+/* Mobil için responsive ayarlar */
+@media (max-width: 768px) {
+  .card {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 15px !important;
+    padding: 10px 0 !important;
+  }
+
+  .card > div {
+    min-width: 150px !important;
+    max-width: 180px !important;
+    width: 150px !important;
+    padding: 15px !important;
+  }
+
+  /* Scroll butonlarını mobilde kartların ortasına hizala */
+  .scroll-button {
+    width: 30px !important;
+    height: 30px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 50%;
+    border: none;
+  }
+
+  /* Sol buton kenara yakın */
+  .scroll-button-left {
+    left: 5px !important;
+  }
+
+  /* Sağ buton kenara yakın */
+  .scroll-button-right {
+    right: 5px !important;
+  }
+}
+
+
+

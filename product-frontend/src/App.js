@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
+import "./App.css";
 
-
-// Basit yıldız ikonları
 const Star = ({ filled }) => (
   <span style={{ color: filled ? "#E6CA97" : "#D9D9D9", fontSize: "16px" }}>★</span>
 );
@@ -56,21 +55,23 @@ function App() {
   };
 
   return (
-    <div style={{ position: "relative", padding: "20px" }}>
+    <div className="container" style={{ position: "relative", padding: "20px" }}>
       <h1 style={{ textAlign: "center", fontFamily: "sans-serif", fontWeight: "normal" }}>Product List</h1>
 
-      {/* Filtreleme Formu */}
-      <div style={{ margin: "20px 0", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+      
+      {/* Filtreleme Formu 
+      <div className="filter-container" style={{ margin: "20px 0", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
         <input type="number" placeholder="Min Price" value={minPrice} onChange={e => setMinPrice(e.target.value)} style={{ padding: "5px", width: "100px" }} />
         <input type="number" placeholder="Max Price" value={maxPrice} onChange={e => setMaxPrice(e.target.value)} style={{ padding: "5px", width: "100px" }} />
         <input type="number" placeholder="Min Popularity" value={minPopularity} onChange={e => setMinPopularity(e.target.value)} style={{ padding: "5px", width: "120px" }} />
         <input type="number" placeholder="Max Popularity" value={maxPopularity} onChange={e => setMaxPopularity(e.target.value)} style={{ padding: "5px", width: "120px" }} />
         <button onClick={applyFilters} style={{ padding: "5px 10px", backgroundColor: "#E6CA97", border: "none", cursor: "pointer" }}>Filter</button>
-      </div>
+      </div> */}
 
       {/* Sol ok */}
       <button
         onClick={scrollLeft}
+        className="scroll-button scroll-button-left"
         style={{
           position: "absolute",
           left: 0,
@@ -92,6 +93,7 @@ function App() {
       {/* Sağ ok */}
       <button
         onClick={scrollRight}
+        className="scroll-button scroll-button-right"
         style={{
           position: "absolute",
           right: 0,
@@ -111,7 +113,7 @@ function App() {
       </button>
 
       {/* Kart container */}
-      <div ref={scrollRef} style={{ display: "flex", overflowX: "auto", gap: "20px", padding: "10px", scrollbarWidth: "thin" }}>
+      <div className="card" ref={scrollRef} style={{ display: "flex", overflowX: "auto", gap: "20px", padding: "10px", scrollbarWidth: "thin" }}>
         {products.map((product, index) => (
           <div key={index} style={{ minWidth: "200px", maxWidth: "250px", width: "200px", padding: "20px", backgroundColor: "#fff", flexShrink: 0 }}>
             <img src={product.images[product.selectedColor]} alt={product.name} style={{ width: "100%", height: "auto", borderRadius: "20px", marginBottom: "10px" }} />
@@ -119,20 +121,35 @@ function App() {
             <p>${product.price} USD</p>
 
             <div style={{ display: "flex", gap: "5px", marginBottom: "5px" }}>
-              {colorOrder.map(color => (
-                <button
+              {colorOrder.map(color => ( 
+
+                <div 
                   key={color}
                   onClick={() => handleColorChange(index, color)}
                   style={{
-                    width: "20px",
-                    height: "20px",
+                    width: "28px",        // dış çerçeve boyutu
+                    height: "28px",
+                    padding: product.selectedColor === color ? "2px" : "0", // seçiliyse çerçeve ile renk arasında boşluk
                     borderRadius: "50%",
-                    border: product.selectedColor === color ? "2px solid black" : "1px solid #ccc",
-                    backgroundColor: colorValues[color],
+                    border: product.selectedColor === color ? "1px solid black" : "0px solid #ccc",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                     cursor: "pointer",
+                    boxSizing: "border-box", 
                   }}
+                >
+                <div
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      borderRadius: "50%",
+                      backgroundColor: colorValues[color],
+                    }}
                 />
+                </div>
               ))}
+                
             </div>
 
             <span style={{ fontSize: "12px", fontWeight: "normal" }}>{colorNames[product.selectedColor]}</span>
