@@ -5,11 +5,7 @@ const path = require("path");
 const fetch = require("node-fetch");
 
 const app = express();
-
-app.use(cors({
-  origin: "https://products-renart.vercel.app/"
-}));
-
+app.use(cors());
 
 // Ürün JSON dosya yolu
 const productsFilePath = path.join(__dirname, "data", "products.json");

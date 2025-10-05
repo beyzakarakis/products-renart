@@ -24,14 +24,18 @@ function App() {
   const HEROKU_API_URL = "https://my-products-api-0a94003b3751.herokuapp.com";
 
   const fetchProducts = (params = "") => {
-    fetch(`${HEROKU_API_URL}/api/products${params}`)
-      .then(res => res.json())
-      .then(data => {
-        const productsWithIndex = data.map(p => ({ ...p, selectedColor: "yellow" }));
-        setProducts(productsWithIndex);
-      })
-      .catch(err => console.error(err));
-  };
+  fetch(`${HEROKU_API_URL}/api/products${params}`)
+    .then(res => {
+      if (!res.ok) throw new Error("Network response was not ok");
+      return res.json();
+    })
+    .then(data => {
+      const productsWithIndex = data.map(p => ({ ...p, selectedColor: "yellow" }));
+      setProducts(productsWithIndex);
+    })
+    .catch(err => console.error("Fetch error:", err));
+};
+
 
   const applyFilters = () => {
     const params = new URLSearchParams();
