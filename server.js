@@ -75,9 +75,8 @@ app.get("/api/products", async (req, res) => {
     res.status(500).json({ error: "Ürünler yüklenemedi" });
   }
 });
-
-// Sunucuyu başlat
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;  // 5000 yerel için fallback olur
 app.listen(PORT, () => {
   console.log(`Backend API çalışıyor → http://localhost:${PORT}`);
 });
+
