@@ -5,7 +5,11 @@ const path = require("path");
 const fetch = require("node-fetch");
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: "https://products-renart.vercel.app/"
+}));
+
 
 // Ürün JSON dosya yolu
 const productsFilePath = path.join(__dirname, "data", "products.json");
@@ -68,6 +72,10 @@ app.get("/api/products", async (req, res) => {
     res.status(500).json({ error: "Ürünler yüklenemedi" });
   }
 });
+
+
+
+
 
 // Port ayarı (Heroku uyumlu)
 const PORT = process.env.PORT || 5000;

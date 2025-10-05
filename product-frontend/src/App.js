@@ -21,8 +21,10 @@ function App() {
     fetchProducts();
   }, []);
 
+  const HEROKU_API_URL = "https://my-products-api-0a94003b3751.herokuapp.com";
+
   const fetchProducts = (params = "") => {
-    fetch(`http://localhost:5000/api/products${params}`)
+    fetch(`${HEROKU_API_URL}/api/products${params}`)
       .then(res => res.json())
       .then(data => {
         const productsWithIndex = data.map(p => ({ ...p, selectedColor: "yellow" }));
