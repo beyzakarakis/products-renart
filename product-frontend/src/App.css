@@ -53,7 +53,7 @@
   border-radius: 20px;
 }
 
-/* Mobil için responsive ayarlar */
+/* Mobil için responsive ayarlar, mobil tasarım bozulmasın diye important kullandık bıu o özelliği baskın kılıyor */
 @media (max-width: 768px) {
   .card {
     flex-wrap: nowrap !important;

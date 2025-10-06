@@ -1,17 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import "./App.css";
 
+//yıldızların gösterimi true ise sarı false ise gri
 const Star = ({ filled }) => (
   <span style={{ color: filled ? "#E6CA97" : "#D9D9D9", fontSize: "16px" }}>★</span>
 );
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [minPrice, setMinPrice] = useState("");
+  const [minPrice, setMinPrice] = useState("");//filtreleme için
   const [maxPrice, setMaxPrice] = useState("");
-  const [minPopularity, setMinPopularity] = useState("");
+  const [minPopularity, setMinPopularity] = useState("");//filtreleme için
   const [maxPopularity, setMaxPopularity] = useState("");
-  const scrollRef = useRef(null);
+  const scrollRef = useRef(null); //yatay scroll için
 
   const colorOrder = ["yellow", "rose", "white"];
   const colorNames = { yellow: "Yellow Gold", rose: "Rose Gold", white: "White Gold" };
@@ -23,20 +24,18 @@ function App() {
 
   const HEROKU_API_URL = "https://my-products-api-0a94003b3751.herokuapp.com";
 
+  //Api'den ürünleri çekiyoruz.
   const fetchProducts = (params = "") => {
-  fetch(`${HEROKU_API_URL}/api/products${params}`)
-    .then(res => {
-      if (!res.ok) throw new Error("Network response was not ok");
-      return res.json();
-    })
-    .then(data => {
-      const productsWithIndex = data.map(p => ({ ...p, selectedColor: "yellow" }));
-      setProducts(productsWithIndex);
-    })
-    .catch(err => console.error("Fetch error:", err));
-};
+    fetch(`${HEROKU_API_URL}/api/products${params}`)
+      .then(res => res.json())
+      .then(data => {
+        const productsWithIndex = data.map(p => ({ ...p, selectedColor: "yellow" })); //varsayılan renk
+        setProducts(productsWithIndex);
+      })
+      .catch(err => console.error(err));
+  };
 
-
+  //filtreleniyor ve tekrar filrelenmiş veriler çekiliyor.
   const applyFilters = () => {
     const params = new URLSearchParams();
     if (minPrice) params.append("minPrice", minPrice);
@@ -46,20 +45,24 @@ function App() {
     fetchProducts(`?${params.toString()}`);
   };
 
+  //kartların bulunduğu containerı sağa sola kaydırmak için
   const scrollLeft = () => scrollRef.current.scrollBy({ left: -250, behavior: "smooth" });
   const scrollRight = () => scrollRef.current.scrollBy({ left: 250, behavior: "smooth" });
 
+  //renk butonuyla ürünün görselini değiştirmek için
   const handleColorChange = (index, color) => {
     const updated = [...products];
     updated[index].selectedColor = color;
     setProducts(updated);
   };
 
+  //popülerlik yıldızlarını gösterme
   const renderStars = score => {
     const rating = Math.round(score * 5);
     return Array.from({ length: 5 }, (_, i) => <Star key={i} filled={i < rating} />);
   };
 
+  //ekrana basılan kısım, filtreleme backendde istediği için front ende çalışıp çalışmadığını kontrol etmek amacıyla yaptım daha sonra yorum satırına aldım.
   return (
     <div className="container" style={{ position: "relative", padding: "20px" }}>
       <h1 style={{ textAlign: "center", fontFamily: "sans-serif", fontWeight: "normal" }}>Product List</h1>
@@ -122,10 +125,13 @@ function App() {
       <div className="card" ref={scrollRef} style={{ display: "flex", overflowX: "auto", gap: "20px", padding: "10px", scrollbarWidth: "thin" }}>
         {products.map((product, index) => (
           <div key={index} style={{ minWidth: "200px", maxWidth: "250px", width: "200px", padding: "20px", backgroundColor: "#fff", flexShrink: 0 }}>
+            {/*Ürün resmi*/}
             <img src={product.images[product.selectedColor]} alt={product.name} style={{ width: "100%", height: "auto", borderRadius: "20px", marginBottom: "10px" }} />
+            {/*Ürün adı ve fiyatı*/}
             <h3 style={{ margin: "5px 0", fontSize: "16px" }}>{product.name}</h3>
             <p>${product.price} USD</p>
-
+            
+            {/*renk seçim butonları*/}
             <div style={{ display: "flex", gap: "5px", marginBottom: "5px" }}>
               {colorOrder.map(color => ( 
 
@@ -157,9 +163,11 @@ function App() {
               ))}
                 
             </div>
-
+            
+            {/*seçilen rengin adı*/}
             <span style={{ fontSize: "12px", fontWeight: "normal" }}>{colorNames[product.selectedColor]}</span>
-
+            
+            {/*popülerlik yıldızları*/}
             <div style={{ marginTop: "5px" }}>
               {renderStars(product.popularityScore)} <span style={{ fontSize: "14px" }}>{product.popularityScore5}/5</span>
             </div>

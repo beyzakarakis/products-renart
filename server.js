@@ -1,8 +1,8 @@
-const express = require("express");
-const cors = require("cors");
-const fs = require("fs");
+const express = require("express"); //Http servis için
+const cors = require("cors"); //front-end ile iletişim kurmak için
+const fs = require("fs"); //JSon dosya okuma
 const path = require("path");
-const fetch = require("node-fetch");
+const fetch = require("node-fetch"); //Altın fiyatı almak için Apiye istek
 
 const app = express();
 app.use(cors());
@@ -11,11 +11,14 @@ app.use(cors());
 const productsFilePath = path.join(__dirname, "data", "products.json");
 
 // Altın fiyatını almak için fonksiyon
+/** * Altın fiyatını GoldAPI üzerinden çekmek için yardımcı fonksiyon * 
+ * - Başarılı olursa gram altın fiyatını (USD) döner * 
+ * - Hata olursa sabit 65 USD döndürür */
 async function getGoldPrice() {
   try {
     const response = await fetch("https://www.goldapi.io/api/XAU/USD", {
       headers: {
-        "x-access-token": "goldapi-2snvtbdsmgcdgzc4-io", // kendi API keyini buraya yaz
+        "x-access-token": "goldapi-2snvtbdsmgcdgzc4-io", // kendi API keyim goldapiden aldım
         "Content-Type": "application/json",
       },
     });
@@ -68,9 +71,6 @@ app.get("/api/products", async (req, res) => {
     res.status(500).json({ error: "Ürünler yüklenemedi" });
   }
 });
-
-
-
 
 
 // Port ayarı (Heroku uyumlu)
