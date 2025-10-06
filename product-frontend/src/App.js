@@ -35,7 +35,7 @@ function App() {
       .catch(err => console.error(err));
   };
 
-  //filtreleniyor ve tekrar filrelenmiş veriler çekiliyor.
+  //filtreleniyor ve tekrar filrelenmiş veriler çekiliyor. https://my-products-api-0a94003b3751.herokuapp.com/api/products?minPrice=300&maxPrice=500 filtreleme bu uzantı üstünden yapılabiliyor.
   const applyFilters = () => {
     const params = new URLSearchParams();
     if (minPrice) params.append("minPrice", minPrice);
